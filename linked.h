@@ -4,9 +4,10 @@
 struct Node;
 typedef struct Node *list;
 typedef struct Node *pos;
+typedef int valType;
 
 struct Node {
-    int value;
+    valType value;
     pos next;
 };
 
@@ -17,13 +18,13 @@ void criticalError(char *msg);
 void printList(list lList, char *msg);
 
 list createList(list pessoa);
-void insertNode(int value, list *lList);
+void insertNode(valType value, list *lList);
 
-pos findNode(int value, list lList);
-pos findPrev(int value, list lList);
+pos findNode(valType value, list lList);
+pos findPrev(valType value, list lList);
 int getVal(pos p);
 
-void deleteNode(int value, list lList);
+void deleteNode(valType value, list lList);
 list clearList(list lList);
 
 #endif // LINKED_H
