@@ -22,8 +22,11 @@ int main() {
 		insertNode(i, &L);
 	}
 
-	printList(L, "\nNode: ");
+	printList(L, "Node: ");
 
-    clearList(L);
+    L = clearList(L);
+
+    printList(L, "Node: ");
+
 	return 0;
 }
