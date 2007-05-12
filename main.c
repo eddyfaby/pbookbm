@@ -6,21 +6,24 @@
 #include "utils.h"
 #include "pessoa.h"
 #include "manager.h"
+#include "linked.h"
 
 #ifndef FILENAME
 #define FILENAME "agenda.dat"
 #endif
 
 int main() {
-	struct Pessoa pessoa;
-	int i = 0;
-    char a[] = "brunu";
-    i = getElement(a);
-    if (i)
-        printf("Element found at line %d", i);
-    else
-        printf("No element found!");
-	//menu(&pessoa);
+    int i;
+	list L = NULL;
 
+	L = createList(L);
+
+	for (i = 1; i <= 200; ++i) {
+		insertNode(i, &L);
+	}
+
+	printList(L, "\nNode: ");
+
+    clearList(L);
 	return 0;
 }
