@@ -36,7 +36,7 @@ list createList(list lList) {
 
     return lList;
 }
-void insertNode(int value, list *lList) {
+void insertNode(valType value, list *lList) {
     pos p;
 
     p = (struct Node *) malloc(sizeof(struct Node));
@@ -48,7 +48,7 @@ void insertNode(int value, list *lList) {
     *lList = p;
 }
 
-pos findNode(int value, list lList) {
+pos findNode(valType value, list lList) {
     pos p;
 
     p = lList;
@@ -57,7 +57,7 @@ pos findNode(int value, list lList) {
     }
     return p;
 }
-pos findPrev(int value, list lList) {
+pos findPrev(valType value, list lList) {
     pos p;
 
     p = lList;
@@ -71,7 +71,7 @@ int getVal(pos p) {
     return p->value;
 }
 
-void deleteNode(int value, list lList) {
+void deleteNode(valType value, list lList) {
     pos p, aux;
 
     p = findPrev(value, lList);
