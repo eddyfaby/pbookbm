@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "../linked.h"
+#include "../utils.h"
 
 int isEmpty(list lList) {
     return lList->next == NULL;
@@ -10,20 +11,15 @@ int isLast(pos lPos) {
   return lPos->next == NULL;
 }
 
-void criticalError(char *msg) {
-    printf("%s", msg);
-    exit(0);
-}
-
 void printList(list lList, char *msg) {
     if (lList)
-        printf("%s", msg);
+        printf("%s\n", msg);
     else {
         printf("Empty list!");
         return;
     }
     while (lList) {
-        printf("%d ", lList->value);
+        printf("%d\n", lList->value);
         lList = lList->next;
     }
 }
@@ -41,15 +37,15 @@ list createList(list lList) {
     return lList;
 }
 void insertNode(int value, list *lList) {
-  pos p;
+    pos p;
 
-  p = (struct Node *) malloc(sizeof(struct Node));
-  if (p == NULL)
-    criticalError("Out of space!!!");
+    p = (struct Node *) malloc(sizeof(struct Node));
+    if (p == NULL)
+        criticalError("There is no space!");
 
-  p->value = value;
-  p->next = *lList;
-  *lList = p;
+    p->value = value;
+    p->next = *lList;
+    *lList = p;
 }
 
 pos findNode(int value, list lList) {
@@ -70,6 +66,9 @@ pos findPrev(int value, list lList) {
     }
 
     return p;
+}
+int getVal(pos p) {
+    return p->value;
 }
 
 void deleteNode(int value, list lList) {

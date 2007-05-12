@@ -3,6 +3,8 @@
 #include <string.h>
 #include <ctype.h>
 
+#include "../utils.h"
+
 void cBuff() {
 	char c;
 	do {
@@ -18,4 +20,9 @@ char* lwrc(char str[]) {
         ++i;
     }
     return str;
+}
+
+void criticalError(char *msg) {
+    printf("%s", msg);
+    exit(0);
 }

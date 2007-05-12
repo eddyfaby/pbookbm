@@ -18,15 +18,15 @@ int main() {
 
 	L = createList(L);
 
-	for (i = 1; i <= 200; ++i) {
+	for (i = 1; i <= 10; ++i) {
 		insertNode(i, &L);
 	}
 
-	printList(L, "Node: ");
+	printList(L, "Linked List values: ");
 
     L = clearList(L);
 
-    printList(L, "Node: ");
+    printList(L, "Is it empty? ");
 
 	return 0;
 }
