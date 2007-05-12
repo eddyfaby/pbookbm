@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1179012581 source:c:\codeblocks\files\agenda\linkedlist\main.c
+	<stdio.h>
+	<stdlib.h>
+	"../linked.h"
+	"../utils.h"
+
+1179012267 c:\codeblocks\files\agenda\linked.h
+
+1179012120 c:\codeblocks\files\agenda\utils.h
+

@@ -3,5 +3,6 @@
 
 void cBuff();
 char* lwrc(char str[]);
+void criticalError(char *msg);
 
 #endif // UTILS_H
