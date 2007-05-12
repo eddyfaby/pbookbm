@@ -16,8 +16,14 @@ void criticalError(char *msg) {
 }
 
 void printList(list lList, char *msg) {
+    if (lList)
+        printf("%s", msg);
+    else {
+        printf("Empty list!");
+        return;
+    }
     while (lList) {
-        printf("%s%d", msg, lList->value);
+        printf("%d ", lList->value);
         lList = lList->next;
     }
 }
@@ -77,11 +83,12 @@ void deleteNode(int value, list lList) {
         free(aux);
     }
 }
-void clearList(list lList) {
+list clearList(list lList) {
     pos p;
     while (lList) {
         p = lList;
         lList = lList->next;
         free(p);
     }
+    return NULL;
 }

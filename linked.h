@@ -23,6 +23,6 @@ pos findNode(int value, list lList);
 pos findPrev(int value, list lList);
 
 void deleteNode(int value, list lList);
-void clearList(list lList);
+list clearList(list lList);
 
 #endif // LINKED_H
