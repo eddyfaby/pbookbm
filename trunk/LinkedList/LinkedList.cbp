@@ -35,9 +35,14 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Linker>
+			<Add library="..\utils\libutils.a" />
+		</Linker>
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="..\linked.h" />
+		<Unit filename="..\utils.h" />
 		<Extensions>
 			<code_completion />
 		</Extensions>

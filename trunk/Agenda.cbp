@@ -34,8 +34,10 @@
 		</Compiler>
 		<Linker>
 			<Add library="manager\libmanager.a" />
+			<Add library="LinkedList\libLinkedList.a" />
 			<Add library="utils\libutils.a" />
 		</Linker>
+		<Unit filename="linked.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
