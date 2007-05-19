@@ -15,11 +15,11 @@ void insert(struct Pessoa pessoa);                      // begin insertion
 
 // Search
 int listElement(char element[], int line);              // list %element%
+int getElement(char element[]);                         // return element line
 // Search
 
 // Delete
-int getElement(char element[]);                         // find and delete
-void delLine(FILE *file, int size);                     // delete a line
+void deleteElement(char element[]);                     // delete a element in the file
 // Delete
 
 #endif // MANAGER_H
