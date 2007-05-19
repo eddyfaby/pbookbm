@@ -12,9 +12,11 @@
 #define FILENAME "agenda.dat"
 #endif
 
-int main() {
+int main(int argc, char **argv) {
+    struct Pessoa person;
 
-    deleteElement("brunu");
+    while (1)
+        menu(&person);
 
 	return 0;
 }

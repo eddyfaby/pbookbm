@@ -6,6 +6,7 @@ void menu(struct Pessoa *pessoa);                       // display menu
 // menu
 
 // Inclusion
+int checkName(struct Pessoa pessoa);                    // check if name is empty
 void resetPessoa(struct Pessoa *pessoa);                // set all elements to "-"
 void writePerson(struct Pessoa pessoa);                 // write the file
 int askInclusion();                                     // check if continue
@@ -14,8 +15,10 @@ void insert(struct Pessoa pessoa);                      // begin insertion
 // Inclusion
 
 // Search
-int listElement(char element[], int line);              // list %element%
+int listElement(char element[]);                        // list %element%
 int getElement(char element[]);                         // return element line
+int askSearch();                                        // check if continue
+void search();                                          // do a search
 // Search
 
 // Delete
