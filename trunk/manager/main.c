@@ -21,20 +21,47 @@ void menu(struct Pessoa *pessoa){
          "[3] Deleta\n"
          "[4] Sair\n"
          "Opcao: ");
-    c = getchar(); cBuff();
+    do {
+        c = getchar(); cBuff();
+    } while (c == '\n');
     switch(c){
         case '0': insert(*pessoa); break;
-        case '1': break;
+        case '1': search();        break;
         case '2': break;
         case '3': break;
-        case '4': break;
+        case '4': exit(0);
     }
 }
 // menu
 
 // Inclusion
+int checkName(struct Pessoa pessoa) {
+    FILE *file;
+    char name[40], *tok;
+
+    if (strlen(pessoa.nome) <= 1)
+        return 1;
+
+    file = fopen(FILENAME, "r");
+    if (!file) {
+    	perror("\nNao foi possivel abrir o arquivo: ");
+    	return 1;
+    }
+
+    while (fgets(name, sizeof(name), file)) {
+        tok = strtok(name, "|");
+        strcpy(pessoa.nome, lwrc(pessoa.nome));
+        tok = lwrc(tok);
+        if (!strcmp(pessoa.nome, tok)) {
+            printf("\nEste nome ja foi incluido\nNome: ");
+            return 1;
+        }
+    }
+    fclose(file);
+    return 0;
+}
 void resetPessoa(struct Pessoa *pessoa) {
-    strcpy(pessoa->nome,     "-");
+    strcpy(pessoa->nome,     "");
     strcpy(pessoa->endereco, "-");
     strcpy(pessoa->email,    "-");
     strcpy(pessoa->telefone, "-");
@@ -55,15 +82,16 @@ void writePerson(struct Pessoa pessoa){
 }
 int askInclusion() {
     char c;
-    printf("Quer incluir mais registros? (S/N) ");
+    printf("\nQuer incluir mais registros? (S/N) ");
     c = getchar(); cBuff();
     return (tolower(c) == 's') ? 1 : 0;
 }
 struct Pessoa readData(struct Pessoa pessoa) {
     resetPessoa(&pessoa);
-    printf("Pesso: %s", pessoa.nome);
     printf("Nome: ");
-    scanf("%40[^\n]", pessoa.nome);       cBuff();
+    do {
+        scanf("%40[^\n]", pessoa.nome);       cBuff();
+    } while (checkName(pessoa));
     printf("Endereco: ");
     scanf("%80[^\n]", pessoa.endereco);   cBuff();
     printf("Email: ");
@@ -82,34 +110,40 @@ void insert(struct Pessoa pessoa){
 // Inclusion
 
 // Search
-int listElement(char element[], int line) {
-    char name[40], han[40];
-    char *key, *tok;
-    int fline = line, total = 0;
+int listElement(char element[]) {
+    char name[200];
+    char *tok = NULL;
+    int total = 0;
+    int line = 0;
     FILE *file;
 
     file = fopen(FILENAME, "r+");
-
-    while (fline && !feof(file)) {
-        fgets(name, sizeof(name), file);
-        --fline;
+    if (!file) {
+        perror("\nNao foi possivel abrir o arquivo: ");
+        return -1;
     }
-    if (fline > 0) return -1; // invalid line
 
     while (!feof(file)) {
         line++;
-        fgets(name, sizeof(name), file);
-        strcpy(han, name);
-        tok = strtok(han, "|");
-        key = (char *) malloc(sizeof(char *) * strlen(tok));
-        strcpy(key, tok);
-        key = lwrc(key);
+        fgets(name, sizeof(name) + sizeof(char), file);
+        if (strlen(name) <= 1) continue;
+        tok = strtok(name, "|");
+        tok = lwrc(tok);
         element = lwrc(element);
-        if (strstr(key, element)) {
+        if (strstr(tok, element)) {
             // create linked list
+            printf("\nRegistro #%d", total);
+            printf("\nNome    : %s", tok);
+            tok = strtok(NULL, "|");
+            printf("\nEndereco: %s", tok);
+            tok = strtok(NULL, "|");
+            printf("\nEmail   : %s", tok);
+            tok = strtok(NULL, "|");
+            printf("\nTelefone: %s", tok);
+            tok = strtok(NULL, "|");
+            printf("\nCelular : %s\n", tok);
             ++total;
         }
-        free(key);
     }
 
     fclose(file);
@@ -124,7 +158,7 @@ int getElement(char element[]) {
 
     file = fopen(FILENAME, "r+");
     if (!file) {
-        printf("Nao foi possivel ler o arquivo");
+        perror("\nNao foi possivel abrir o arquivo: ");
         return -1;
     }
     while (!feof(file)) {
@@ -148,6 +182,20 @@ int getElement(char element[]) {
 
     return 0; // nothing found
 }
+int askSearch() {
+    char c;
+    printf("\nDeseja realizar uma nova busca? (S/N) ");
+    c = getchar(); cBuff();
+    return (tolower(c) == 's') ? 1 : 0;
+}
+void search() {
+    char name[40];
+    do {
+        printf("\nDigite o nome: ");
+        scanf("%[^\n]", name); cBuff();
+        listElement(name);
+    } while (askSearch());
+}
 // Search
 
 // Delete
@@ -158,18 +206,18 @@ void deleteElement(char element[]) {
     int cLine = 0;
 
     if (line <= 0) {
-        printf("\nNenhum elemento foi encontrado");
+        perror("\nNenhum elemento foi encontrado: ");
         return;
     }
 
     f = fopen(FILENAME, "r+");
     if (!f) {
-    	printf("\nNao foi possivel abrir o arquivo");
+    	perror("\nNao foi possivel abrir o arquivo: ");
     	return;
     }
     t = tmpfile();
     if (!t) {
-    	printf("\nNao foi possivel abrir o arquivo");
+    	perror("\nNao foi possivel abrir o arquivo: ");
     	return;
     }
 
@@ -183,7 +231,7 @@ void deleteElement(char element[]) {
 
     f = fopen(FILENAME, "w+");
     if (!f) {
-    	printf("\nNao foi possivel abrir o arquivo");
+    	perror("\nNao foi possivel abrir o arquivo: ");
     	return;
     }
     rewind(t);
