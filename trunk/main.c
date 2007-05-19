@@ -13,20 +13,8 @@
 #endif
 
 int main() {
-    int i;
-	list L = NULL;
 
-	L = createList(L);
-
-	for (i = 1; i <= 10; ++i) {
-		insertNode(i, &L);
-	}
-
-	printList(L, "Linked List values: ");
-
-    L = clearList(L);
-
-    printList(L, "Is it empty? ");
+    deleteElement("brunu");
 
 	return 0;
 }

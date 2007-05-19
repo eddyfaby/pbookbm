@@ -116,17 +116,6 @@ int listElement(char element[], int line) {
 
     return total; // n found
 }
-// Search
-
-// Delete
-void delLine(FILE *file, int size) {
-    printf("Size: %d\n", size);
-    --size;
-    while (size) {
-        --size;
-        fputs(" ", file);
-    }
-}
 int getElement(char element[]) {
     char name[40], han[40];
     char *key, *tok;
@@ -134,7 +123,10 @@ int getElement(char element[]) {
     FILE *file;
 
     file = fopen(FILENAME, "r+");
-
+    if (!file) {
+        printf("Nao foi possivel ler o arquivo");
+        return -1;
+    }
     while (!feof(file)) {
         line++;
         fgets(name, sizeof(name), file);
@@ -145,9 +137,7 @@ int getElement(char element[]) {
         key = lwrc(key);
         element = lwrc(element);
         if (!strcmp(element, key)) {
-            fseek(file, -(strlen(name)) - 1, SEEK_CUR);
-            delLine(file, strlen(name));
-            fclose(file); //
+            fclose(file);
             free(key);
             return line; // found
         }
@@ -157,5 +147,52 @@ int getElement(char element[]) {
     fclose(file);
 
     return 0; // nothing found
+}
+// Search
+
+// Delete
+void deleteElement(char element[]) {
+    FILE *t, *f;
+    char sLine[201];
+    int line = getElement(element);
+    int cLine = 0;
+
+    if (line <= 0) {
+        printf("\nNenhum elemento foi encontrado");
+        return;
+    }
+
+    f = fopen(FILENAME, "r+");
+    if (!f) {
+    	printf("\nNao foi possivel abrir o arquivo");
+    	return;
+    }
+    t = tmpfile();
+    if (!t) {
+    	printf("\nNao foi possivel abrir o arquivo");
+    	return;
+    }
+
+    while (fgets(sLine, 200, f)) {
+        ++cLine;
+        if (cLine != line)
+            fputs(sLine, t);
+    }
+
+    fclose(f);
+
+    f = fopen(FILENAME, "w+");
+    if (!f) {
+    	printf("\nNao foi possivel abrir o arquivo");
+    	return;
+    }
+    rewind(t);
+
+    while (fgets(sLine, 200, t)) {
+        fputs(sLine, f);
+    }
+
+    fclose(f);
+    fclose(t);
 }
 // Delete

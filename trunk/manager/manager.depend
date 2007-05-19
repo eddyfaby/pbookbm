@@ -1,19 +1,16 @@
 # depslib dependency file v1.0
-1179609223 source:c:\codeblocks\files\agenda\main.c
+1179609153 source:c:\codeblocks\files\agenda\manager\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<ctype.h>
-	"utils.h"
-	"pessoa.h"
-	"manager.h"
-	"linked.h"
+	"../utils.h"
+	"../pessoa.h"
+	"../manager.h"
 
 1179012120 c:\codeblocks\files\agenda\utils.h
 
 1178232886 c:\codeblocks\files\agenda\pessoa.h
 
 1179607269 c:\codeblocks\files\agenda\manager.h
-
-1179013040 c:\codeblocks\files\agenda\linked.h
 
