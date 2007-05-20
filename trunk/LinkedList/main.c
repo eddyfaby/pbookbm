@@ -67,9 +67,6 @@ pos findPrev(valType value, list lList) {
 
     return p;
 }
-int getVal(pos p) {
-    return p->value;
-}
 
 void deleteNode(valType value, list lList) {
     pos p, aux;
