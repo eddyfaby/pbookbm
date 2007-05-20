@@ -22,7 +22,6 @@ void insertNode(valType value, list *lList);
 
 pos findNode(valType value, list lList);
 pos findPrev(valType value, list lList);
-int getVal(pos p);
 
 void deleteNode(valType value, list lList);
 list clearList(list lList);
