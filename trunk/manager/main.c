@@ -259,8 +259,6 @@ void deleteReg(list *lList) {
     }
     printf("   ELEMENTO A SER DELETADO       %s", p->nome);
     deleteElement(p->nome);
-    deleteNode(i, *lList);
-    printList(*lList, "\n\n\n\n  LISTA  ");
     *lList = clearList(*lList);
 }
 // Delete
