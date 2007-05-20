@@ -36,8 +36,8 @@
 			<Add option="-Wall" />
 		</Compiler>
 		<Linker>
-			<Add library="..\utils\libutils.a" />
 			<Add library="..\LinkedList\libLinkedList.a" />
+			<Add library="..\utils\libutils.a" />
 		</Linker>
 		<Unit filename="..\linked.h" />
 		<Unit filename="..\manager.h" />
