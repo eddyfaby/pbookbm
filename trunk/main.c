@@ -3,10 +3,10 @@
 #include <string.h>
 #include <ctype.h>
 
+#include "linked.h"
 #include "utils.h"
 #include "pessoa.h"
 #include "manager.h"
-#include "linked.h"
 
 #ifndef FILENAME
 #define FILENAME "agenda.dat"
@@ -14,9 +14,13 @@
 
 int main(int argc, char **argv) {
     struct Pessoa person;
+    list lList = NULL;
+
+    lList = createList(lList);
 
     while (1)
-        menu(&person);
+        menu(&person, &lList);
 
+    lList = clearList(lList);
 	return 0;
 }

@@ -37,7 +37,9 @@
 		</Compiler>
 		<Linker>
 			<Add library="..\utils\libutils.a" />
+			<Add library="..\LinkedList\libLinkedList.a" />
 		</Linker>
+		<Unit filename="..\linked.h" />
 		<Unit filename="..\manager.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />

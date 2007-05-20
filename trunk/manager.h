@@ -2,7 +2,7 @@
 #define MANAGER_H
 
 // menu
-void menu(struct Pessoa *pessoa);                       // display menu
+void menu(struct Pessoa *pessoa, list *lList);          // display menu
 // menu
 
 // Inclusion
@@ -15,14 +15,15 @@ void insert(struct Pessoa pessoa);                      // begin insertion
 // Inclusion
 
 // Search
-int listElement(char element[]);                        // list %element%
+int listElement(char element[], list *lList);           // list %element%
 int getElement(char element[]);                         // return element line
 int askSearch();                                        // check if continue
-void search();                                          // do a search
+void search(list *lList);                               // do a search
 // Search
 
 // Delete
 void deleteElement(char element[]);                     // delete a element in the file
+void deleteReg(list *lList);                            // search and destroy
 // Delete
 
 #endif // MANAGER_H

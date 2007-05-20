@@ -7,7 +7,8 @@ typedef struct Node *pos;
 typedef int valType;
 
 struct Node {
-    valType value;
+    valType id;
+    char nome[40];
     pos next;
 };
 
@@ -17,13 +18,13 @@ int isLast(pos lPos);
 void criticalError(char *msg);
 void printList(list lList, char *msg);
 
-list createList(list pessoa);
-void insertNode(valType value, list *lList);
+list createList(list lList);
+void insertNode(valType id, char nome[], list *lList);
 
-pos findNode(valType value, list lList);
-pos findPrev(valType value, list lList);
+pos findNode(valType id, list lList);
+pos findPrev(valType id, list lList);
 
-void deleteNode(valType value, list lList);
+void deleteNode(valType id, list lList);
 list clearList(list lList);
 
 #endif // LINKED_H
