@@ -3,8 +3,9 @@
 #include <string.h>
 #include <ctype.h>
 
-#include "../utils.h"
 #include "../pessoa.h"
+#include "../linked.h"
+#include "../utils.h"
 #include "../manager.h"
 
 #ifndef FILENAME
@@ -12,24 +13,24 @@
 #endif
 
 // menu
-void menu(struct Pessoa *pessoa){
+void menu(struct Pessoa *pessoa, list *lList) {
     char c;
     puts("Selecione uma opcao \n"
-         "[0] Inserir\n"
-         "[1] Pesquisar\n"
-         "[2] Altera\n"
-         "[3] Deleta\n"
-         "[4] Sair\n"
+         "[1] Inserir\n"
+         "[2] Pesquisar\n"
+         "[3] Altera\n"
+         "[4] Deleta\n"
+         "[0] Sair\n"
          "Opcao: ");
     do {
         c = getchar(); cBuff();
     } while (c == '\n');
     switch(c){
-        case '0': insert(*pessoa); break;
-        case '1': search();        break;
-        case '2': break;
+        case '1': insert(*pessoa);            break;
+        case '2': search(&(*lList));          break;
         case '3': break;
-        case '4': exit(0);
+        case '4': deleteReg(&(*lList));       break;
+        case '0': *lList = clearList(*lList); exit(0);
     }
 }
 // menu
@@ -110,12 +111,14 @@ void insert(struct Pessoa pessoa){
 // Inclusion
 
 // Search
-int listElement(char element[]) {
+int listElement(char element[], list *lList) {
     char name[200];
     char *tok = NULL;
     int total = 0;
     int line = 0;
     FILE *file;
+
+    element = lwrc(element);
 
     file = fopen(FILENAME, "r+");
     if (!file) {
@@ -125,13 +128,14 @@ int listElement(char element[]) {
 
     while (!feof(file)) {
         line++;
+        strcpy(name, "");
         fgets(name, sizeof(name) + sizeof(char), file);
-        if (strlen(name) <= 1) continue;
+        if (strlen(name) <= 3) continue;
         tok = strtok(name, "|");
         tok = lwrc(tok);
-        element = lwrc(element);
         if (strstr(tok, element)) {
             // create linked list
+            insertNode(total, tok, &(*lList));
             printf("\nRegistro #%d", total);
             printf("\nNome    : %s", tok);
             tok = strtok(NULL, "|");
@@ -151,10 +155,12 @@ int listElement(char element[]) {
     return total; // n found
 }
 int getElement(char element[]) {
-    char name[40], han[40];
-    char *key, *tok;
+    char name[40];
+    char *tok;
     int line = 0;
     FILE *file;
+
+    element = lwrc(element);
 
     file = fopen(FILENAME, "r+");
     if (!file) {
@@ -164,18 +170,12 @@ int getElement(char element[]) {
     while (!feof(file)) {
         line++;
         fgets(name, sizeof(name), file);
-        strcpy(han, name);
-        tok = strtok(han, "|");
-        key = (char *) malloc(sizeof(char *) * strlen(tok));
-        strcpy(key, tok);
-        key = lwrc(key);
-        element = lwrc(element);
-        if (!strcmp(element, key)) {
+        tok = strtok(name, "|");
+        tok = lwrc(tok);
+        if (!strcmp(element, tok)) {
             fclose(file);
-            free(key);
             return line; // found
         }
-        free(key);
     }
 
     fclose(file);
@@ -188,12 +188,13 @@ int askSearch() {
     c = getchar(); cBuff();
     return (tolower(c) == 's') ? 1 : 0;
 }
-void search() {
+void search(list *lList) {
     char name[40];
+
     do {
         printf("\nDigite o nome: ");
         scanf("%[^\n]", name); cBuff();
-        listElement(name);
+        listElement(name, &(*lList));
     } while (askSearch());
 }
 // Search
@@ -205,8 +206,10 @@ void deleteElement(char element[]) {
     int line = getElement(element);
     int cLine = 0;
 
+    printf(" \n   LINHA DO ELEMENTO      %d      ", line);
+
     if (line <= 0) {
-        perror("\nNenhum elemento foi encontrado: ");
+        printf("\nNenhum elemento foi encontrado\n");
         return;
     }
 
@@ -221,7 +224,7 @@ void deleteElement(char element[]) {
     	return;
     }
 
-    while (fgets(sLine, 200, f)) {
+    while (fgets(sLine, sizeof(sLine) + sizeof(char), f)) {
         ++cLine;
         if (cLine != line)
             fputs(sLine, t);
@@ -242,5 +245,22 @@ void deleteElement(char element[]) {
 
     fclose(f);
     fclose(t);
+}
+void deleteReg(list *lList) {
+    pos p;
+    int i;
+    search(&(*lList));
+    printf("\nEscolha o registro para deletar: ");
+    scanf("%d", &i); cBuff();
+    p = findNode(i, *lList);
+    if (!p) {
+        printf("\nElemento nao encontrado\n");
+        return;
+    }
+    printf("   ELEMENTO A SER DELETADO       %s", p->nome);
+    deleteElement(p->nome);
+    deleteNode(i, *lList);
+    printList(*lList, "\n\n\n\n  LISTA  ");
+    *lList = clearList(*lList);
 }
 // Delete

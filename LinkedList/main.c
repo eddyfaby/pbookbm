@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "../linked.h"
 #include "../utils.h"
@@ -19,7 +20,8 @@ void printList(list lList, char *msg) {
         return;
     }
     while (lList) {
-        printf("%d\n", lList->value);
+        printf("Id  : %d\n", lList->id);
+        printf("Nome: %s\n", lList->nome);
         lList = lList->next;
     }
 }
@@ -32,46 +34,48 @@ list createList(list lList) {
     if (!lList) return NULL;
 
     lList->next = NULL;
-    lList->value = 0;
+    lList->id = 0;
+    strcpy(lList->nome, "");
 
     return lList;
 }
-void insertNode(valType value, list *lList) {
+void insertNode(valType id, char nome[], list *lList) {
     pos p;
 
     p = (struct Node *) malloc(sizeof(struct Node));
     if (p == NULL)
         criticalError("There is no space!");
 
-    p->value = value;
+    p->id = id;
+    strcpy(p->nome, nome);
     p->next = *lList;
     *lList = p;
 }
 
-pos findNode(valType value, list lList) {
+pos findNode(valType id, list lList) {
     pos p;
 
     p = lList;
-    while (p != NULL && p->value != value) {
+    while (p != NULL && p->id != id) {
         p = p->next;
     }
     return p;
 }
-pos findPrev(valType value, list lList) {
+pos findPrev(valType id, list lList) {
     pos p;
 
     p = lList;
-    while (p->next != NULL && p->next->value != value) {
+    while (p->next != NULL && p->next->id != id) {
         p = p->next;
     }
 
     return p;
 }
 
-void deleteNode(valType value, list lList) {
+void deleteNode(valType id, list lList) {
     pos p, aux;
 
-    p = findPrev(value, lList);
+    p = findPrev(id, lList);
 
     if (!isLast(p)) {
         aux = p->next;
