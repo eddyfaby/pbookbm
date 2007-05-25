@@ -18,10 +18,10 @@ void help() {
          "\n"
          "\nFuncoes e sintaxes:"
          "\n"
-         "\n -inserir   [nome,endereco,email,telefone,celular]"
-         "\n -pesquisar [nome]"
-         "\n -alterar   [nome]"
-         "\n -deletar   [nome]"
+         "\n -inserir"
+         "\n -pesquisar"
+         "\n -alterar"
+         "\n -deletar"
          "\n"
          "\nInstrucoes das funcoes:"
          "\n"
@@ -31,7 +31,9 @@ void help() {
          "\n"
          "\nAlterar   -> Solicita uma busca em que o usuario escolhe um registro"
          "\n             para alteracao."
-         "\nDeletar   -> Exclui o registro solicitado"
+         "\nDeletar   -> Exclui o registro solicitado."
+         "\n"
+         "\nImportar  -> Adiciona registros no arquivo atual."
          "\n"
         );
 }
@@ -43,6 +45,7 @@ void menu(struct Pessoa *pessoa, list *lList) {
          "[3] Altera\n"
          "[4] Deleta\n"
          "[5] Ajuda\n"
+         "[6] Importar\n"
          "[0] Sair"
         );
     printf("Opcao: ");
@@ -55,6 +58,7 @@ void menu(struct Pessoa *pessoa, list *lList) {
         case '3': alter(&(*lList));           break;
         case '4': deleteReg(&(*lList));       break;
         case '5': help();                     break;
+        case '6': import("");                 break;
         case '0': *lList = clearList(*lList); exit(0);
     }
 }
@@ -306,3 +310,34 @@ void deleteReg(list *lList) {
     *lList = clearList(*lList);
 }
 // Delete
+
+// Import
+void import() {
+    FILE *f, *t;
+    char registro[201];
+    char file[201];
+
+    if (strlen(file) < 1) {
+        printf("\nDeseja importar de qual arquivo? ");
+        scanf("%200[^\n]", file);
+    }
+
+    f = fopen(FILENAME, "a+");
+    if (!f) {
+        perror("Nao foi possivel abrir o arquivo: ");
+        return;
+    }
+    t = fopen(file, "r");
+    if (!t) {
+        perror("Nao foi possivel abrir o arquivo: ");
+        return;
+    }
+    while (!feof(t)) {
+        fgets(registro, sizeof(registro), t);
+        fprintf(f, "%s", registro);
+    }
+
+    fclose(t);
+    fclose(f);
+}
+// Import
