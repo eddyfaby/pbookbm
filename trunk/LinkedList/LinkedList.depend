@@ -10,3 +10,14 @@
 
 1179611623 c:\codeblocks\files\agenda\utils.h
 
+1180046650 source:d:\codeblocks\agenda\linkedlist\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"../linked.h"
+	"../utils.h"
+
+1180046110 d:\codeblocks\agenda\linked.h
+
+1179012122 d:\codeblocks\agenda\utils.h
+

@@ -13,6 +13,28 @@
 #endif
 
 // menu
+void help() {
+    puts("\nPara exibir este menu voce pode executar o programa com o parametro -help ou -?"
+         "\n"
+         "\nFuncoes e sintaxes:"
+         "\n"
+         "\n -inserir   [nome,endereco,email,telefone,celular]"
+         "\n -pesquisar [nome]"
+         "\n -alterar   [nome]"
+         "\n -deletar   [nome]"
+         "\n"
+         "\nInstrucoes das funcoes:"
+         "\n"
+         "\nInserir   -> Abre um menu solicitando dados para inclusao de um novo"
+         "\n             registro."
+         "\nPesquisar -> Lista registros de acordo com a busca."
+         "\n"
+         "\nAlterar   -> Solicita uma busca em que o usuario escolhe um registro"
+         "\n             para alteracao."
+         "\nDeletar   -> Exclui o registro solicitado"
+         "\n"
+        );
+}
 void menu(struct Pessoa *pessoa, list *lList) {
     char c;
     puts("Selecione uma opcao \n"
@@ -20,16 +42,19 @@ void menu(struct Pessoa *pessoa, list *lList) {
          "[2] Pesquisar\n"
          "[3] Altera\n"
          "[4] Deleta\n"
-         "[0] Sair\n"
-         "Opcao: ");
+         "[5] Ajuda\n"
+         "[0] Sair"
+        );
+    printf("Opcao: ");
     do {
         c = getchar(); cBuff();
     } while (c == '\n');
     switch(c){
         case '1': insert(*pessoa);            break;
         case '2': search(&(*lList));          break;
-        case '3': break;
+        case '3': alter(&(*lList));           break;
         case '4': deleteReg(&(*lList));       break;
+        case '5': help();                     break;
         case '0': *lList = clearList(*lList); exit(0);
     }
 }
@@ -199,14 +224,34 @@ void search(list *lList) {
 }
 // Search
 
+// Alter
+void alterElement(char element[]) {
+    struct Pessoa pessoa;
+    deleteElement(element);
+    writePerson(readData(pessoa));
+}
+void alter(list *lList) {
+    pos p;
+    int i;
+    search(&(*lList));
+    printf("\nEscolha o registro para alterar (-1 para cancelar): ");
+    scanf("%d", &i); cBuff();
+    p = findNode(i, *lList);
+    if (!p) {
+        printf("\nElemento nao encontrado\n");
+        return;
+    }
+    alterElement(p->nome);
+    *lList = clearList(*lList);
+}
+// Alter
+
 // Delete
 void deleteElement(char element[]) {
     FILE *t, *f;
     char sLine[201];
     int line = getElement(element);
     int cLine = 0;
-
-    printf(" \n   LINHA DO ELEMENTO      %d      ", line);
 
     if (line <= 0) {
         printf("\nNenhum elemento foi encontrado\n");
@@ -250,14 +295,13 @@ void deleteReg(list *lList) {
     pos p;
     int i;
     search(&(*lList));
-    printf("\nEscolha o registro para deletar: ");
+    printf("\nEscolha o registro para deletar (-1 para cancelar): ");
     scanf("%d", &i); cBuff();
     p = findNode(i, *lList);
     if (!p) {
         printf("\nElemento nao encontrado\n");
         return;
     }
-    printf("   ELEMENTO A SER DELETADO       %s", p->nome);
     deleteElement(p->nome);
     *lList = clearList(*lList);
 }

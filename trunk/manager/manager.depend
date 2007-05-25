@@ -17,3 +17,21 @@
 
 1179621035 c:\codeblocks\files\agenda\linked.h
 
+1180048540 source:d:\codeblocks\agenda\manager\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<ctype.h>
+	"../pessoa.h"
+	"../linked.h"
+	"../utils.h"
+	"../manager.h"
+
+1178232886 d:\codeblocks\agenda\pessoa.h
+
+1180046110 d:\codeblocks\agenda\linked.h
+
+1179012122 d:\codeblocks\agenda\utils.h
+
+1180046494 d:\codeblocks\agenda\manager.h
+
