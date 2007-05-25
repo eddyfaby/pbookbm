@@ -5,3 +5,12 @@
 	<string.h>
 	<ctype.h>
 
+1180052682 source:d:\codeblocks\agenda\utils\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<ctype.h>
+	"../utils.h"
+
+1179012122 d:\codeblocks\agenda\utils.h
+
