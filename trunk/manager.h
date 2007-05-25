@@ -31,4 +31,8 @@ void deleteElement(char element[]);                      // delete a element in 
 void deleteReg(list *lList);                             // search and destroy
 // Delete
 
+// Import
+void import();                                           // Importar registros
+// Import
+
 #endif // MANAGER_H
