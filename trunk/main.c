@@ -19,20 +19,21 @@ int main(int argc, char **argv) {
     lList = createList(lList);
 
     if (argc > 1) {
-        if (!strcmpi("-help", argv[1]) || !strcmpi("-?", argv[1])) {
-            help();
-        }
-        if (!strcmpi("-inserir", argv[1])) {
+        strcpy(argv[1], lwrc(argv[1]));
+        if (!strcmp("-inserir", argv[1])) {
             insert(pessoa);
         }
-        if (!strcmpi("-pesquisar", argv[1])) {
+        else if (!strcmp("-pesquisar", argv[1])) {
             search(&lList);
         }
-        if (!strcmpi("-alterar", argv[1])) {
+        else if (!strcmp("-alterar", argv[1])) {
             alter(&lList);
         }
-        if (!strcmpi("-deletar", argv[1])) {
+        else if (!strcmp("-deletar", argv[1])) {
             deleteReg(&lList);
+        }
+        else {
+            help();
         }
         clearList(lList);
         exit(0);

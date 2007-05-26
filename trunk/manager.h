@@ -7,7 +7,8 @@ void menu(struct Pessoa *pessoa, list *lList);           // display menu
 // menu
 
 // Inclusion
-int checkName(struct Pessoa pessoa);                     // set all elements to "-"
+int checkName(char nome[], int output);                  // check if the name is already in
+void resetPessoa(struct Pessoa *pessoa);                 // set all elements to "-"
 void writePerson(struct Pessoa pessoa);                  // write the file
 int askInclusion();                                      // check if continue
 struct Pessoa readData(struct Pessoa pessoa);            // read person data
