@@ -53,37 +53,43 @@ void menu(struct Pessoa *pessoa, list *lList) {
         c = getchar(); cBuff();
     } while (c == '\n');
     switch(c){
-        case '1': insert(*pessoa);            break;
+        case '1':
+            insert(*pessoa);
+            break;
         case '2': search(&(*lList));          break;
         case '3': alter(&(*lList));           break;
         case '4': deleteReg(&(*lList));       break;
         case '5': help();                     break;
-        case '6': import("");                 break;
+        case '6': import();                   break;
         case '0': *lList = clearList(*lList); exit(0);
     }
 }
 // menu
 
 // Inclusion
-int checkName(struct Pessoa pessoa) {
+int checkName(char nome[], int output) {
     FILE *file;
     char name[40], *tok;
 
-    if (strlen(pessoa.nome) <= 1)
+    if (strlen(nome) <= 1)
         return 1;
 
-    file = fopen(FILENAME, "r");
+    file = fopen(FILENAME, "r+");
     if (!file) {
-    	perror("\nNao foi possivel abrir o arquivo: ");
-    	return 1;
+        file = fopen(FILENAME, "w+");
+        if (!file) {
+            perror("\nNao foi possivel abrir o arquivo");
+            return 1;
+        }
     }
 
     while (fgets(name, sizeof(name), file)) {
         tok = strtok(name, "|");
-        strcpy(pessoa.nome, lwrc(pessoa.nome));
+        strcpy(nome, lwrc(nome));
         tok = lwrc(tok);
-        if (!strcmp(pessoa.nome, tok)) {
-            printf("\nEste nome ja foi incluido\nNome: ");
+        if (!strcmp(nome, tok)) {
+            if (output)
+                printf("Este nome ja foi incluido\n");
             return 1;
         }
     }
@@ -117,11 +123,13 @@ int askInclusion() {
     return (tolower(c) == 's') ? 1 : 0;
 }
 struct Pessoa readData(struct Pessoa pessoa) {
+    char han[40];
     resetPessoa(&pessoa);
     printf("Nome: ");
     do {
         scanf("%40[^\n]", pessoa.nome);       cBuff();
-    } while (checkName(pessoa));
+        strcpy(han, pessoa.nome);
+    } while (checkName(han, 1));
     printf("Endereco: ");
     scanf("%80[^\n]", pessoa.endereco);   cBuff();
     printf("Email: ");
@@ -142,7 +150,7 @@ void insert(struct Pessoa pessoa){
 // Search
 int listElement(char element[], list *lList) {
     char name[200];
-    char *tok = NULL;
+    char han[40], *tok = NULL;
     int total = 0;
     int line = 0;
     FILE *file;
@@ -151,7 +159,7 @@ int listElement(char element[], list *lList) {
 
     file = fopen(FILENAME, "r+");
     if (!file) {
-        perror("\nNao foi possivel abrir o arquivo: ");
+        perror("\nNao foi possivel abrir o arquivo");
         return -1;
     }
 
@@ -161,12 +169,13 @@ int listElement(char element[], list *lList) {
         fgets(name, sizeof(name) + sizeof(char), file);
         if (strlen(name) <= 3) continue;
         tok = strtok(name, "|");
+        strcpy(han, tok);
         tok = lwrc(tok);
         if (strstr(tok, element)) {
             // create linked list
             insertNode(total, tok, &(*lList));
             printf("\nRegistro #%d", total);
-            printf("\nNome    : %s", tok);
+            printf("\nNome    : %s", han);
             tok = strtok(NULL, "|");
             printf("\nEndereco: %s", tok);
             tok = strtok(NULL, "|");
@@ -178,6 +187,8 @@ int listElement(char element[], list *lList) {
             ++total;
         }
     }
+    if (!total)
+        printf("Nenhum elementro foi encontrado!\n");
 
     fclose(file);
 
@@ -193,7 +204,7 @@ int getElement(char element[]) {
 
     file = fopen(FILENAME, "r+");
     if (!file) {
-        perror("\nNao foi possivel abrir o arquivo: ");
+        perror("\nNao foi possivel abrir o arquivo");
         return -1;
     }
     while (!feof(file)) {
@@ -258,18 +269,18 @@ void deleteElement(char element[]) {
     int cLine = 0;
 
     if (line <= 0) {
-        printf("\nNenhum elemento foi encontrado\n");
+        printf("Nenhum elemento foi encontrado\n");
         return;
     }
 
     f = fopen(FILENAME, "r+");
     if (!f) {
-    	perror("\nNao foi possivel abrir o arquivo: ");
+    	perror("\nNao foi possivel abrir o arquivo");
     	return;
     }
     t = tmpfile();
     if (!t) {
-    	perror("\nNao foi possivel abrir o arquivo: ");
+    	perror("\nNao foi possivel abrir o arquivo");
     	return;
     }
 
@@ -283,7 +294,7 @@ void deleteElement(char element[]) {
 
     f = fopen(FILENAME, "w+");
     if (!f) {
-    	perror("\nNao foi possivel abrir o arquivo: ");
+    	perror("\nNao foi possivel abrir o arquivo");
     	return;
     }
     rewind(t);
@@ -303,10 +314,11 @@ void deleteReg(list *lList) {
     scanf("%d", &i); cBuff();
     p = findNode(i, *lList);
     if (!p) {
-        printf("\nElemento nao encontrado\n");
+        printf("Elemento nao encontrado\n");
         return;
     }
     deleteElement(p->nome);
+    printf("Registro excluido com sucesso!\n");
     *lList = clearList(*lList);
 }
 // Delete
@@ -316,25 +328,31 @@ void import() {
     FILE *f, *t;
     char registro[201];
     char file[201];
+    char han[201], *tok;
 
     if (strlen(file) < 1) {
         printf("\nDeseja importar de qual arquivo? ");
-        scanf("%200[^\n]", file);
+        scanf("%200[^\n]", file); cBuff();
     }
 
     f = fopen(FILENAME, "a+");
     if (!f) {
-        perror("Nao foi possivel abrir o arquivo: ");
+        perror("Nao foi possivel abrir o arquivo");
         return;
     }
     t = fopen(file, "r");
     if (!t) {
-        perror("Nao foi possivel abrir o arquivo: ");
+        perror("Nao foi possivel abrir o arquivo");
         return;
     }
     while (!feof(t)) {
         fgets(registro, sizeof(registro), t);
-        fprintf(f, "%s", registro);
+        strcpy(han, registro);
+        tok = strtok(han, "|");
+        if (!checkName(tok, 0))
+            fprintf(f, "%s", registro);
+        strcpy(registro, "i|");
+        strcpy(han, "i|");
     }
 
     fclose(t);
