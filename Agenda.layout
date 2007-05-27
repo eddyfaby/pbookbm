@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="linked.h" open="1" top="0" tabpos="0">
+	<File name="linked.h" open="1" top="0" tabpos="1">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="main.c" open="1" top="0" tabpos="2">
-		<Cursor position="364" topLine="0" />
+	<File name="main.c" open="1" top="1" tabpos="3">
+		<Cursor position="485" topLine="12" />
 	</File>
 	<File name="manager.h" open="1" top="0" tabpos="1">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="pessoa.h" open="1" top="0" tabpos="0">
 		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="utils.h" open="0" top="0" tabpos="1">
